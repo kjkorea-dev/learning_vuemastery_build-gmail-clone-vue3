@@ -10,10 +10,10 @@
 <script>
 import { onBeforeUnmount } from 'vue'
 
-const useKeydown = (fn) => {
+const useKeydown = (keyPressed, fn) => {
   const onKeydown = (event) => {
     console.log(event.key)
-    if (event.key === 'Escape') {
+    if (event.key === keyPressed) {
       fn()
     }
   }
@@ -27,8 +27,11 @@ const useKeydown = (fn) => {
 
 export default {
   setup(props, { emit }) {
-    useKeydown(() => {
+    useKeydown('Escape', () => {
       emit('closeModal')
+    })
+    useKeydown('Enter', () => {
+      console.log('A different funtion')
     })
 
     return {
