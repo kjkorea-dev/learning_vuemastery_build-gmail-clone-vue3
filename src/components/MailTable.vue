@@ -17,7 +17,9 @@
       <td><button @click="archiveEmail(email)">Archive</button></td>
     </tr>
   </table>
-  <MailView v-if="openedEmail" :email="openedEmail" />
+  <ModalView v-if="openedEmail" @closeModal="openedEmail = null">
+    <MailView :email="openedEmail" />
+  </ModalView>
 </template>
 
 <script>
@@ -25,6 +27,7 @@ import { format } from 'date-fns'
 import { ref } from 'vue'
 import axios from 'axios'
 import MailView from '@/components/MailView.vue'
+import ModalView from '@/components/ModalView.vue'
 
 export default {
   async setup() {
@@ -40,6 +43,7 @@ export default {
   },
   components: {
     MailView,
+    ModalView,
   },
   computed: {
     sortedEmails() {
