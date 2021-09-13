@@ -9,19 +9,26 @@
 
 <script>
 import { onBeforeUnmount } from 'vue'
+
+const useKeydown = (fn) => {
+  const onKeydown = (event) => {
+    console.log(event.key)
+    if (event.key === 'Escape') {
+      fn()
+    }
+  }
+
+  window.addEventListener('keydown', onKeydown)
+
+  onBeforeUnmount(() => {
+    window.removeEventListener('keydown', onKeydown)
+  })
+}
+
 export default {
   setup(props, { emit }) {
-    const onKeydown = (event) => {
-      console.log(event.key)
-      if (event.key === 'Escape') {
-        emit('closeModal')
-      }
-    }
-
-    window.addEventListener('keydown', onKeydown)
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('keydown', onKeydown)
+    useKeydown(() => {
+      emit('closeModal')
     })
 
     return {
