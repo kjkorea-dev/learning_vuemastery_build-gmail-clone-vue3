@@ -7,8 +7,8 @@
       <button @click="toggleRead">
         Mark {{ email.read ? 'Unread' : 'Read' }} (r)
       </button>
-      <button>Newer</button>
-      <button>Older</button>
+      <button @click="goNewer">Newer (k)</button>
+      <button @click="goOlder">Older (j)</button>
     </div>
     <h2 class="mb-0">
       Subject: <strong>{{ email.subject }}</strong>
@@ -24,22 +24,22 @@
 </template>
 
 <script>
-import { toRefs } from 'vue'
-import axios from 'axios'
 import { format } from 'date-fns'
 import marked from 'marked'
 import useKeydown from '@/composables/use-keydown'
 export default {
-  setup(props) {
-    const { email } = toRefs(props)
+  setup(props, { emit }) {
     const toggleRead = () => {
-      email.value.read = !email.value.read
-      axios.put(`http://localhost:3000/emails/${email.value.id}`, email.value)
+      emit('changeEmail', { toggleRead: true, save: true })
     }
-
     const toggleArchive = () => {
-      email.value.archived = !email.value.archived
-      axios.put(`http://localhost:3000/emails/${email.value.id}`, email.value)
+      emit('changeEmail', { toggleArchive: true, save: true, closeModal: true })
+    }
+    const goNewer = () => {
+      emit('changeEmail', { changeIndex: -1 })
+    }
+    const goOlder = () => {
+      emit('changeEmail', { changeIndex: 1 })
     }
 
     useKeydown([
@@ -51,6 +51,14 @@ export default {
         key: 'e',
         fn: toggleArchive,
       },
+      {
+        key: 'k',
+        fn: goNewer,
+      },
+      {
+        key: 'j',
+        fn: goOlder,
+      },
     ])
 
     return {
@@ -58,6 +66,8 @@ export default {
       marked,
       toggleRead,
       toggleArchive,
+      goNewer,
+      goOlder,
     }
   },
   props: {
