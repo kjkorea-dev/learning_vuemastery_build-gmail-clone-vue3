@@ -1,7 +1,9 @@
 <template>
   <div class="email-display">
     <div class="toolbar">
-      <button>Archive</button>
+      <button @click="toggleArchive">
+        {{ email.archived ? 'Move to Inbox' : 'Archive' }} (e)
+      </button>
       <button @click="toggleRead">
         Mark {{ email.read ? 'Unread' : 'Read' }} (r)
       </button>
@@ -35,10 +37,19 @@ export default {
       axios.put(`http://localhost:3000/emails/${email.value.id}`, email.value)
     }
 
+    const toggleArchive = () => {
+      email.value.archived = !email.value.archived
+      axios.put(`http://localhost:3000/emails/${email.value.id}`, email.value)
+    }
+
     useKeydown([
       {
         key: 'r',
         fn: toggleRead,
+      },
+      {
+        key: 'e',
+        fn: toggleArchive,
       },
     ])
 
@@ -46,6 +57,7 @@ export default {
       format,
       marked,
       toggleRead,
+      toggleArchive,
     }
   },
   props: {
