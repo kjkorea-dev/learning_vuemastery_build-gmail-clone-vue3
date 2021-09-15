@@ -8,23 +8,7 @@
 </template>
 
 <script>
-import { onBeforeUnmount } from 'vue'
-
-const useKeydown = (keyCombos) => {
-  const onKeydown = (event) => {
-    console.log(event.key)
-    const kc = keyCombos.find((kc) => kc.key == event.key)
-    if (kc) {
-      kc.fn()
-    }
-  }
-
-  window.addEventListener('keydown', onKeydown)
-
-  onBeforeUnmount(() => {
-    window.removeEventListener('keydown', onKeydown)
-  })
-}
+import useKeydown from '@/composables/use-keydown'
 
 export default {
   setup(props, { emit }) {
@@ -33,12 +17,6 @@ export default {
         key: 'Escape',
         fn: () => {
           emit('closeModal')
-        },
-      },
-      {
-        key: 'Enter',
-        fn: () => {
-          console.log('A different funtion')
         },
       },
     ])
