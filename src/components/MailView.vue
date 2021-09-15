@@ -3,7 +3,7 @@
     <div class="toolbar">
       <button>Archive</button>
       <button @click="toggleRead">
-        Mark {{ email.read ? 'Unread' : 'Read' }}
+        Mark {{ email.read ? 'Unread' : 'Read' }} (r)
       </button>
       <button>Newer</button>
       <button>Older</button>
@@ -26,6 +26,7 @@ import { toRefs } from 'vue'
 import axios from 'axios'
 import { format } from 'date-fns'
 import marked from 'marked'
+import useKeydown from '@/composables/use-keydown'
 export default {
   setup(props) {
     const { email } = toRefs(props)
@@ -33,6 +34,14 @@ export default {
       email.value.read = !email.value.read
       axios.put(`http://localhost:3000/emails/${email.value.id}`, email.value)
     }
+
+    useKeydown([
+      {
+        key: 'r',
+        fn: toggleRead,
+      },
+    ])
+
     return {
       format,
       marked,
