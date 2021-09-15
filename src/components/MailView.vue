@@ -41,6 +41,12 @@ export default {
     const goOlder = () => {
       emit('changeEmail', { changeIndex: 1 })
     }
+    const goNewerAndArchive = () => {
+      emit('changeEmail', { changeIndex: -1, toggleArchive: true })
+    }
+    const goOlderAndArchive = () => {
+      emit('changeEmail', { changeIndex: 1, toggleArchive: true })
+    }
 
     useKeydown([
       {
@@ -58,6 +64,14 @@ export default {
       {
         key: 'j',
         fn: goOlder,
+      },
+      {
+        key: '[',
+        fn: goNewerAndArchive,
+      },
+      {
+        key: ']',
+        fn: goOlderAndArchive,
       },
     ])
 
