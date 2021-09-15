@@ -1,5 +1,13 @@
 <template>
   <div class="email-display">
+    <div class="toolbar">
+      <button>Archive</button>
+      <button @click="toggleRead">
+        Mark {{ email.read ? 'Unread' : 'Read' }}
+      </button>
+      <button>Newer</button>
+      <button>Older</button>
+    </div>
     <h2 class="mb-0">
       Subject: <strong>{{ email.subject }}</strong>
     </h2>
@@ -14,13 +22,21 @@
 </template>
 
 <script>
+import { toRefs } from 'vue'
+import axios from 'axios'
 import { format } from 'date-fns'
 import marked from 'marked'
 export default {
-  setup() {
+  setup(props) {
+    const { email } = toRefs(props)
+    const toggleRead = () => {
+      email.value.read = !email.value.read
+      axios.put(`http://localhost:3000/emails/${email.value.id}`, email.value)
+    }
     return {
       format,
       marked,
+      toggleRead,
     }
   },
   props: {
