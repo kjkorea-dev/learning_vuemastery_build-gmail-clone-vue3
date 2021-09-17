@@ -41,15 +41,12 @@ import BulkActionBar from '@/components/BulkActionBar.vue'
 
 export default {
   async setup() {
-    const emails = ref([])
-    const response = await axios.get('http://localhost:3000/emails')
-    emails.value = response.data
-    const openedEmail = ref(null)
+    const { data: emails } = await axios.get('http://localhost:3000/emails')
 
     return {
       format,
-      emails,
-      openedEmail,
+      emails: ref(emails),
+      openedEmail: ref(null),
       emailSelection: useEmailSelection(),
     }
   },
