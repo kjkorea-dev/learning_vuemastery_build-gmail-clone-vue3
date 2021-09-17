@@ -1,5 +1,5 @@
 <template>
-  <h1>{{ emailSelection.emails.size }} emails selected</h1>
+  <BulkActionBar :emails="unarchivedEmails" />
   <table class="mail-table">
     <tr
       v-for="email in unarchivedEmails"
@@ -37,6 +37,7 @@ import axios from 'axios'
 import useEmailSelection from '@/composables/use-email-selection.js'
 import MailView from '@/components/MailView.vue'
 import ModalView from '@/components/ModalView.vue'
+import BulkActionBar from '@/components/BulkActionBar.vue'
 
 export default {
   async setup() {
@@ -55,6 +56,7 @@ export default {
   components: {
     MailView,
     ModalView,
+    BulkActionBar,
   },
   computed: {
     sortedEmails() {
