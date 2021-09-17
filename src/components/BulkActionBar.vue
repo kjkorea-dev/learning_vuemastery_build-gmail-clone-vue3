@@ -39,12 +39,13 @@ export default {
     const emailSelection = useEmailSelection()
     const numberSelected = computed(() => emailSelection.emails.size)
     const { emails } = toRefs(props)
-    const numberEmails = emails.value.length
+    const numberEmails = computed(() => emails.value.length)
     const allEmailsSelected = computed(
-      () => numberSelected.value === numberEmails
+      () => numberSelected.value === numberEmails.value
     )
     const someEmailsSelected = computed(
-      () => numberSelected.value > 0 && numberSelected.value < numberEmails
+      () =>
+        numberSelected.value > 0 && numberSelected.value < numberEmails.value
     )
     const bulkSelect = () => {
       if (allEmailsSelected.value) {
